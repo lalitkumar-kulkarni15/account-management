@@ -1,0 +1,20 @@
+CREATE TABLE BANK_ACCOUNTS (
+    ACCT_NUM int NOT NULL,
+	FIRST_NAME varchar(255) NOT NULL,
+	MIDDLE_NAME varchar(255),
+    LAST_NAME varchar(255),
+    DOB DATE NOT NULL,
+	MOB_NUM varchar(15) NOT NULL,
+    ADDR_LINE_1 varchar(255) NOT NULL,
+    ADDR_LINE_2 varchar(255),
+    PIN_CODE varchar(255),
+	ACCT_CURRENCY varchar(3) NOT NULL,
+	NOMINEE_NAME int NOT NULL,
+    NOMINEE_MOB_NUM varchar(15) NOT NULL,
+	PRIMARY KEY (ACCT_NUM),
+	CREATED_DATE_TIME datetime2  NOT NULL,
+    UPDATED_DATE_TIME datetime2  NOT NULL,
+    CREATED_BY varchar(255),
+    UPDATED_BY varchar(255),
+    STATUS varchar(1)
+);
