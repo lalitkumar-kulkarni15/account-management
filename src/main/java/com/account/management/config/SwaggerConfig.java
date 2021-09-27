@@ -17,12 +17,8 @@ public class SwaggerConfig {
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Account-management-API")
-                .description("This API has 3 endpoints which persists the instrument transactions to the data store and returns the aggregated statistics of the last 60 seconds. " +
-                        "• The first one is called every time we receive a tick. It is also the sole input of this rest API.\n" +
-                        "• The second one returns the statistics based on the ticks of all instruments of the last 60 seconds\n" +
-                        "(sliding time interval)\n" +
-                        "• The third one returns the statistics based on the ticks of one instrument of the last 60 seconds\n" +
-                        "(sliding time interval).")
+                .description("The account management API has capability to create, update and fetch the bank account of the customer. It can as well transfer funds from one valid acount" +
+                                "to another account across different currencies. It invokes a third party API to get the currency exchange rates while performing the fund transfer.")
                 .contact(new Contact("Lalit Kulkarni", "https://www.linkedin.com/in/lalitkumar-kulkarni-42159532/", "lalitkulkarniofficial@gmail.com"))
                 .build();
 
