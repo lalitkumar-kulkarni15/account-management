@@ -6,15 +6,11 @@ import com.account.management.exception.AccountManagementValidationException;
 import com.account.management.model.Account;
 import com.account.management.model.ExchangeRate;
 import com.account.management.model.Transaction;
-import com.account.management.model.TransactionLogRequest;
 import com.account.management.repository.TransactionRepository;
-import io.micrometer.core.instrument.util.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -23,9 +19,6 @@ import java.util.Optional;
 
 @Service
 public class FundServiceImpl implements FundService {
-
-    private static final String ORDER_ASCENDING = "ASC";
-    private static final String TRANSACTION_DATE_TIME = "transactionDateTime";
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -98,20 +91,12 @@ public class FundServiceImpl implements FundService {
         }
     }
 
-    public List<Transaction> getTransactions(TransactionLogRequest transactionLogRequest) {
+    public List<Transaction> getTransactions(int accountNumber, Date fromDateTime, Date toDateTime, Pageable pageable) {
 
-        final Pageable pageable = getPageable(transactionLogRequest);
-        final List<TransactionEntity> transactionPage = transactionRepository.findTransactionLogs(transactionLogRequest.getAccountNumber(), pageable);
+        final List<TransactionEntity> transactionPage = transactionRepository.findTransactionLogs(fromDateTime, toDateTime,
+                accountNumber, pageable);
         return modelMapper.map(transactionPage, new TypeToken<List<Transaction>>() {
         }.getType());
     }
 
-    private Pageable getPageable(TransactionLogRequest transactionLogRequest) {
-
-        if (StringUtils.isNotEmpty(transactionLogRequest.getOrder()) && ORDER_ASCENDING.equalsIgnoreCase(transactionLogRequest.getOrder())) {
-            return PageRequest.of(transactionLogRequest.getPageNumber(), transactionLogRequest.getPageSize(), Sort.by(TRANSACTION_DATE_TIME).ascending());
-        } else {
-            return PageRequest.of(transactionLogRequest.getPageNumber(), transactionLogRequest.getPageSize(), Sort.by(TRANSACTION_DATE_TIME).descending());
-        }
-    }
 }

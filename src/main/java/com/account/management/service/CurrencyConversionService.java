@@ -4,7 +4,7 @@ import com.account.management.model.ExchangeRate;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "currencyConversionService", url = "https://api.exchangerate.host")
+@FeignClient(value = "currencyConversionService", url = "${currency.conversion.host}")
 public interface CurrencyConversionService {
 
     @GetMapping("/convert")

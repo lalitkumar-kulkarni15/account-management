@@ -2,15 +2,33 @@ package com.account.management.utils;
 
 import com.account.management.model.Account;
 import com.account.management.model.Transaction;
-import com.account.management.model.TransactionLogRequest;
-import org.springframework.http.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class TestDataUtils {
+
+    public static Account getNewBankAccountRequestWithInsufficientBalance() {
+
+        return Account.builder()
+                .firstName("Lalit")
+                .middleName("S")
+                .lastName("Kulkarni")
+                .mobNo("+918765434219")
+                .addressLineOne("Ausburg Avenue, Campal street, Panjim , Goa")
+                .addressLineTwo("India")
+                .dob(new Date())
+                .currency("USD")
+                .nomineeName("Paul Michael")
+                .nomineeMobNum("+917865432199")
+                .pinCode(768543)
+                .createdBy("TEST_USER")
+                .status("A")
+                .acctBalance(0)
+                .build();
+
+    }
 
     public static Account getNewBankAccountRequest() {
 
@@ -28,6 +46,7 @@ public class TestDataUtils {
                 .pinCode(768543)
                 .createdBy("TEST_USER")
                 .status("A")
+                .acctBalance(5)
                 .build();
 
     }
@@ -69,21 +88,19 @@ public class TestDataUtils {
                 .pinCode(768543)
                 .createdBy("TEST_USER")
                 .status("A")
+                .acctBalance(9)
                 .build();
 
     }
 
-    public static TransactionLogRequest getTransactionLogRequest(int accountNumber){
+    /*public static TransactionLogRequest getTransactionLogRequest(int accountNumber){
 
         return TransactionLogRequest.builder()
                 .accountNumber(accountNumber)
-                .fromDateTime(LocalDateTime.now().minusDays(1))
-                .toDateTime(LocalDateTime.now().plusDays(1))
-                .order("DESC")
-                .pageNumber(1)
-                .pageSize(10)
+                .fromDateTime(new Date())
+                .toDateTime(new Date())
                 .build();
-    }
+    }*/
 
     public static Transaction getFundTransferRequest(int fromAccountNumber, int toAccountNumber){
 
@@ -92,22 +109,32 @@ public class TestDataUtils {
                 .fromAccountNumber(fromAccountNumber)
                 .toAccountNumber(toAccountNumber)
                 .transferComments("Birthday gift")
+                .transactionDateTime(new Date())
                 .build();
     }
 
-    public static HttpHeaders getHttpHeader(){
+    public static Transaction getFundTransferRequestForInvalidSourceAccount(int fromAccountNumber, int toAccountNumber){
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        List<MediaType> mediaTypeList = new ArrayList<>();
-        mediaTypeList.add(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(mediaTypeList);
-        return httpHeaders;
+        return Transaction.builder()
+                .amount(1)
+                .fromAccountNumber(0)
+                .toAccountNumber(toAccountNumber)
+                .transferComments("Birthday gift")
+                .transactionDateTime(new Date())
+                .build();
     }
 
     public static String createURLWithPort(final String uri, final String host,
                                            final String port) {
 
         return "http://" + host + ":" + port + uri;
+    }
+
+    public static String convertDate(Date date){
+
+        String pattern = "dd-MMM-yyyy,HH:mm:ss";
+        DateFormat df = new SimpleDateFormat(pattern);
+        String stringDate = df.format(date);
+        return stringDate;
     }
 }
